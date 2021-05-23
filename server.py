@@ -1,0 +1,26 @@
+import socket
+se = socket.socket()
+print("socket created!")
+ip,port = 'localhost',80
+se.bind((ip,port))
+se.listen()
+print("waiting for 1st client...")
+con1,addr1 = se.accept()
+c1n=con1.recv(1024).decode()
+print(c1n,"is connected")
+con1.send(bytes("welcome to azzu's server!",'utf-8'))
+print("waiting for 2nd client...")
+con2,addr2 = se.accept()
+c2n=con2.recv(1024).decode()
+print(c2n,"is connected")
+con2.send(bytes("welcome to azzu's server!",'utf-8'))
+con1.send(c2n.encode())
+con2.send(c1n.encode())
+message = " "
+message = message.encode()
+while 1:
+    con1.send(message)
+    recv_message1 = con1.recv(1024).decode()
+    con2.send(recv_message1.encode())
+    recv_message2 = con2.recv(1024).decode()
+    con1.send(recv_message2.encode())
